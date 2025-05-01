@@ -31,10 +31,18 @@ class Field {
   // Print the current field with color coding for readability
   print() {
     const fieldString = this.field
-      .map((row) =>
+      .map((row, rowIndex) =>
         row
-          .map((cell) => {
-            if (cell === pathCharacter) return chalk.green(cell);
+          .map((cell, colIndex) => {
+            if (rowIndex === this.playerY && colIndex === this.playerX) {
+              // Make the current position stand out (e.g., blue)
+              return chalk.cyan(pathCharacter);
+            }
+            if (cell === pathCharacter) {
+              // Change path color based on turn count
+              const color = this.turns % 2 === 0 ? chalk.green : chalk.magenta;
+              return color(cell);
+            }
             if (cell === hole) return chalk.red(cell);
             if (cell === hat) return chalk.yellow(cell);
             return cell;
